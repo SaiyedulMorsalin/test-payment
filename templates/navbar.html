@@ -1,0 +1,47 @@
+{% load cart_tag %}
+
+<!-- Navbar -->
+<nav style="background-color: aquamarine;" class="navbar navbar-expand-md navbar-light">
+  <div class="container">
+    <a class="navbar-brand" href="#!">Our Shop</a>
+
+    <!-- Collapse button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav1" aria-controls="basicExampleNav1" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+    <li class="breadcrumb-item">
+      <a class="waves-effect" href="{% url 'shop:home' %}">Home</a>
+    </li>
+
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="basicExampleNav1">
+      <!-- Right -->
+
+      <ul class="navbar-nav ml-auto">
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a href="{% url 'order:cart' request.user.id 1 %}" class="nav-link navbar-link-2 waves-effect">
+              <span class="badge badge-pill red">{{ request.user|cart_total }}</span>
+              <i class="fas fa-shopping-cart pl-0"></i>
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle waves-effect" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fas fa-user-alt"></i> {{ request.user.username }}</a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="{% url 'payment:orders' %}">Orders</a>
+              <form method="POST" action="{% url 'accounts:logout' %}" class="dropdown-item">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+              </form>
+            </div>
+          </li>
+        {% else %}
+          <li class="nav-item pl-2 mb-2 mb-md-0">
+            <a href="{% url 'accounts:login' %}" type="button" class="btn btn-outline-info btn-md btn-rounded btn-navbar waves-effect waves-light">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+    <!-- Links -->
+  </div>
+</nav>
+<!-- Navbar -->
