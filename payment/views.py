@@ -1,13 +1,14 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.urls import reverse
 
+
 from order.models import Order, Cart
 
 from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 
-
+# for payment import ssl commerz
 from sslcommerz_lib import SSLCOMMERZ
 
 from decimal import Decimal
@@ -29,6 +30,9 @@ def unique_transaction_id_generator(size=10, chars=string.ascii_uppercase + stri
 @login_required
 def checkout(request):
     
+    print('\n==========================')
+    print('Checkout Called')
+    print('==========================\n')
 
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     order_items = order_qs[0].orderitems.all()
@@ -45,10 +49,13 @@ def checkout(request):
 @login_required
 def payment(request):
     
-
+    print('\n==========================')
+    print('Payment Called')
+    print('==========================\n')
 
     store_id = 'democ66334da1b3c90'
-
+    #Wrong_id
+    # store_id = 'democ66334da1b3c91'
     store_pass = 'democ66334da1b3c90@ssl'
     
     order_qs = Order.objects.filter(user=request.user, ordered=False)
@@ -75,7 +82,7 @@ def payment(request):
     post_body['cus_email'] = request.user.email
     post_body['cus_phone'] = '0178888889' 
     post_body['cus_add1'] = 'Dhaka' 
-    post_body['cus_city'] = 'Mohammadpur'
+    post_body['cus_city'] = 'Uttara'
     post_body['cus_country'] = 'Bangladesh'
     post_body['shipping_method'] = "NO"
     post_body['multi_card_name'] = ""
@@ -101,7 +108,10 @@ def payment(request):
 @csrf_exempt
 def complete(request):
     
-
+    print('\n==========================')
+    print('Complete Called')
+    print('==========================\n')
+    
     
     if request.method == 'POST' or request.method == 'post':
         payment_data = request.POST
@@ -124,6 +134,9 @@ def complete(request):
 @csrf_exempt
 def purchase(request, tran_id,user_id):
     
+    print('\n==========================')
+    print('Purcahse Called')
+    print('==========================\n')
     
     user=User.objects.get(id=user_id)
     
@@ -148,6 +161,10 @@ def purchase(request, tran_id,user_id):
 
 @csrf_exempt
 def order_view(request):
+    
+    print('\n==========================')
+    print('order_view')
+    print('==========================\n')
     
     
     try:
